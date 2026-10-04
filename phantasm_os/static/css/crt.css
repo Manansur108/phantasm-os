@@ -1,0 +1,97 @@
+/* CRT Screen Shader & Post-Processing Effects */
+
+#crt-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99999;
+  transition: opacity 0.3s ease;
+}
+
+/* Base CRT Mode */
+body.crt-mode #crt-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+  z-index: 99999;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* CRT Screen Vignette & Curvature Illusion */
+body.crt-mode #crt-screen::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.4);
+}
+
+/* Subtle Phosphor Glow and Screen Flicker */
+body.crt-mode {
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.35);
+  animation: crtFlicker 0.15s infinite;
+}
+
+@keyframes crtFlicker {
+  0% { opacity: 0.992; }
+  50% { opacity: 1; }
+  100% { opacity: 0.988; }
+}
+
+/* Extreme Glitch Mode (ARG stage trigger) */
+body.crt-glitch #crt-screen::before {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 0, 50, 0.3) 0px,
+    rgba(0, 255, 120, 0.2) 2px,
+    transparent 4px,
+    rgba(0, 50, 255, 0.3) 6px
+  );
+  animation: glitchLines 0.1s steps(3) infinite;
+}
+
+body.crt-glitch {
+  filter: contrast(130%) hue-rotate(45deg);
+  animation: glitchShake 0.12s infinite;
+}
+
+@keyframes glitchLines {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(5px); }
+}
+
+@keyframes glitchShake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(2px, -1px); }
+  75% { transform: translate(-1px, -2px); }
+  100% { transform: translate(1px, 2px); }
+}
+
+/* Scanline Sweep Beam */
+body.crt-mode .scanline-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0.8;
+  pointer-events: none;
+  animation: scanbeam 6s linear infinite;
+  z-index: 100000;
+}
+
+@keyframes scanbeam {
+  0% { top: -10px; }
+  100% { top: 100%; }
+}
